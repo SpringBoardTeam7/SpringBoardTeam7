@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class BoardController {
 
@@ -37,7 +38,7 @@ public class BoardController {
     public PassResponseDto deleteBoard(@PathVariable Long boardId,
                                        @AuthenticationPrincipal UserDetailsImpl userDetails) {
         boardService.deleteBoard(boardId, userDetails.getUser());
-        return new PassResponseDto(HttpStatus.OK.value(), "success");
+        return new PassResponseDto(HttpStatus.OK, "success");
     }
 
     @GetMapping("/boards")

@@ -1,6 +1,5 @@
 package com.sparta.springboardteam7.service;
 
-import com.sparta.springboardteam7.dto.*;
 import com.sparta.springboardteam7.dto.comment.CommentRequestDto;
 import com.sparta.springboardteam7.dto.comment.CommentResponseDto;
 import com.sparta.springboardteam7.dto.global.PassResponseDto;

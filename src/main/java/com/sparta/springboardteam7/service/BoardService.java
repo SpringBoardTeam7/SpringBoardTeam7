@@ -6,6 +6,8 @@ import com.sparta.springboardteam7.entity.Board;
 import com.sparta.springboardteam7.entity.User;
 import com.sparta.springboardteam7.repository.BoardRepository;
 import com.sparta.springboardteam7.repository.UserRepository;
+import com.sparta.springboardteam7.util.exception.CustomException;
+import com.sparta.springboardteam7.util.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,10 +36,10 @@ public class BoardService {
     @Transactional
     public BoardResponseDto updateBoard(Long boardId, BoardRequestDto requestDto, User user) {
         Board board = boardRepository.findById(boardId).orElseThrow(() ->
-                new BlogException(BlogExceptionType.BOARD_NOT_FOUND));
+                new CustomException(ErrorCode.NOT_FOUND_BOARD));
 
         userRepository.findByUsername(user.getUsername()).orElseThrow(
-                () -> new BlogException(BlogExceptionType.NO_AUTHORITY_UPDATE_BOARD)
+                () -> new CustomException(ErrorCode.INVALID_AUTH_BOARD)
         );
 
         board.update(requestDto);
@@ -52,7 +54,7 @@ public class BoardService {
         Board board = checkBoard(boardRepository,boardId);
 
         userRepository.findByUsername(user.getUsername()).orElseThrow(
-                () -> new BlogException(BlogExceptionType.NO_AUTHORITY_UPDATE_BOARD)
+                () -> new CustomException(ErrorCode.INVALID_AUTH_BOARD)
         );
         boardRepository.delete(board);
     }
@@ -77,7 +79,7 @@ public class BoardService {
 
     private Board checkBoard(BoardRepository boardRepository, Long boardId) {
         return boardRepository.findById(boardId).orElseThrow(
-                () -> new BlogException(BlogExceptionType.BOARD_NOT_FOUND)
+                () -> new CustomException(ErrorCode.NOT_FOUND_BOARD)
         );
     }
 }

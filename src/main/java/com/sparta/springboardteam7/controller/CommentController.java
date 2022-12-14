@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class CommentController {
     private final CommentService commentService;
