@@ -30,7 +30,7 @@ public class Board {
     private User user;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
-    @OrderBy("createdAt desc")
+    @OrderBy("createdAt desc")  // 작성날짜 기준 내림차순
     private List<Comment> comments = new ArrayList<>();
 
     @JsonIgnore

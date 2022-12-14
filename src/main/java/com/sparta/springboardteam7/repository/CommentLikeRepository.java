@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface CommentLikeRepository extends JpaRepository<CommentLike, Long> {
-    Optional<CommentLike> findByCommentAndMember(Comment comment, User user);
-    CommentLike findByCommentIdAndMemberId(Long commentId, Long memberId);
+    Optional<CommentLike> findByCommentAndUser(Comment comment, User user);
+    CommentLike findByCommentIdAndUserUserId(Long commentId, Long memberId);
 }

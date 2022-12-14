@@ -30,7 +30,7 @@ public class CommentLikeService {
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new CustomException(ErrorCode.NOT_FOUND_BOARD)
         );
-        Optional<CommentLike> like = commentLikeRepository.findByCommentAndMember(comment, user);
+        Optional<CommentLike> like = commentLikeRepository.findByCommentAndUser(comment, user);
 
         if(like.isPresent()) {
             commentLikeRepository.delete(like.get());

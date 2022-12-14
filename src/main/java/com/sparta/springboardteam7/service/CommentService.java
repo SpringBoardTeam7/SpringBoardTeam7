@@ -62,6 +62,7 @@ public class CommentService {
         }
     }
 
+    @Transactional
     public CommentResponseDto updateComment(Long id, CommentRequestDto requestDto, HttpServletRequest request) {
 
         String token = jwtUtil.resolveToken(request);           // Request(Token) -> BoardService
@@ -91,8 +92,9 @@ public class CommentService {
                     comment = commentRepository.findById(id).orElseThrow(
                             () -> new NullPointerException("해당 댓글은 존재하지 않습니다.")
                     );
-                    comment.update(requestDto);                                             // 입력받은 내용 Update 처리
                 }
+
+                comment.update(requestDto);                                                 // 입력받은 내용 Update 처리
                 Comment saveComment = commentRepository.save(comment);                      // 업데이트한 내용 저장 (Transection 어노테이션을 제거하여 변경된 상태에서 커밋해주는 로직이 필요함)
                 return new CommentResponseDto("success", HttpStatus.OK, saveComment);
             }
@@ -136,8 +138,9 @@ public class CommentService {
                 comment = commentRepository.findById(id).orElseThrow(
                         () -> new NullPointerException("해당 댓글은 존재하지 않습니다.")
                 );
-                commentRepository.deleteById(id);                                          // 입력받은 게시판 id 삭제 처리
             }
+
+            commentRepository.deleteById(id);                                          // 입력받은 게시판 id 삭제 처리
             return new PassResponseDto(HttpStatus.OK, "success");
         } else {
             throw new IllegalArgumentException("토큰이 존재하지 않습니다.");
