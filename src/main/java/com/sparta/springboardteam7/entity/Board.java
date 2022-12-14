@@ -24,7 +24,7 @@ public class Board {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "USER_ID")
     private User user;
 
     public Board(BoardRequestDto requestDto) {

@@ -6,6 +6,8 @@ import com.sparta.springboardteam7.entity.User;
 import com.sparta.springboardteam7.repository.BoardLikeRepository;
 import com.sparta.springboardteam7.repository.BoardRepository;
 import com.sparta.springboardteam7.repository.UserRepository;
+import com.sparta.springboardteam7.util.exception.CustomException;
+import com.sparta.springboardteam7.util.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,16 +24,16 @@ public class BoardLikeService {
     @Transactional
     public void saveLike(Long boardId, User user) {
         userRepository.findByUsername(user.getUsername()).orElseThrow(
-                () -> new BlogException(BlogExceptionType.MEMBER_NOT_FOUND)
+                () -> new CustomException(ErrorCode.NOT_FOUND_USER)
         );
         Board board = boardRepository.findById(boardId).orElseThrow(
-                () -> new BlogException(BlogExceptionType.BOARD_NOT_FOUND)
+                () -> new CustomException(ErrorCode.NOT_FOUND_BOARD)
         );
-        Optional<BoardLike> like = boardLikeRepository.findByBoardAndMember(board, user);
+        Optional<BoardLike> like = boardLikeRepository.findByBoardAndUser(board, user);
 
         // 이미 ‘좋아요’한 게시글에 다시 요청을 하면 ‘좋아요’를 했던 기록이 취소
         if(like.isPresent()) {
-            BoardLike boardLike = boardLikeRepository.findByBoardIdAndMemberId(boardId, user.getId());
+            BoardLike boardLike = boardLikeRepository.findByBoardIdAndUserUserId(boardId, user.getUserId());
             boardLikeRepository.delete(boardLike);
         }
         else {
