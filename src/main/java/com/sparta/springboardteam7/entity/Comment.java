@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -27,11 +29,17 @@ public class Comment extends Timestamped {
     @JsonIgnore                                           // 게시물 조회시 댓글에 blog 컬럼 내용이 보이지않게 해당 데이터는 Ignore 되도록 처리함
     private Board board;
 
+    private int commentLike;
+
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
+    private List<CommentLike> commentLikes = new ArrayList<>();
+
 
     public Comment(CommentRequestDto requestDto, Board board, String username) {
         this.contents = requestDto.getContents();         // 사용자가 입력한 댓글 내용
         this.board = board;                               // Board 컬럼 데이터
         this.username = username;
+        this.commentLike = commentLikes.size();
     }
 
     public void update(CommentRequestDto requestDto) {
