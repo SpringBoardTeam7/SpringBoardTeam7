@@ -17,7 +17,6 @@ public class BoardLikeController {
 
     @PostMapping("/boards/{boardId}/like")
     public PassResponseDto saveLike(@PathVariable Long boardId, @AuthenticationPrincipal UserDetailsImpl details) {
-        boardLikeService.saveLike(boardId, details.getUser());
-        return new PassResponseDto(HttpStatus.OK, "success");
+        return boardLikeService.saveLike(boardId, details.getUser());
     }
 }

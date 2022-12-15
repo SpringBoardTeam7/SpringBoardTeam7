@@ -23,7 +23,7 @@ public class Comment extends Timestamped {
     private String username;
 
     @ManyToOne                                            // Comment(many) <-> Board(one) Join
-    @JoinColumn(name = "BOARD_ID", nullable = false)       // Board Primary key값을 가져와서 매핑시킴
+    @JoinColumn(name = "BOARD_ID", nullable = false)      // Board Primary key값을 가져와서 매핑시킴
     @JsonIgnore                                           // 게시물 조회시 댓글에 blog 컬럼 내용이 보이지않게 해당 데이터는 Ignore 되도록 처리함
     private Board board;
 
@@ -31,7 +31,7 @@ public class Comment extends Timestamped {
     public Comment(CommentRequestDto requestDto, Board board) {
         this.contents = requestDto.getContents();         // 사용자가 입력한 댓글 내용
         this.username = requestDto.getUsername();         // 사용자 ID
-        this.board = board;                                 // Board 컬럼 데이터
+        this.board = board;                               // Board 컬럼 데이터
     }
 
     public void update(CommentRequestDto requestDto) {

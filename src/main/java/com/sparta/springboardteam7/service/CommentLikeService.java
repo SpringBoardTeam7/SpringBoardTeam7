@@ -28,7 +28,7 @@ public class CommentLikeService {
                 () -> new CustomException(ErrorCode.NOT_FOUND_USER)
         );
         Comment comment = commentRepository.findById(commentId).orElseThrow(
-                () -> new CustomException(ErrorCode.NOT_FOUND_BOARD)
+                () -> new CustomException(ErrorCode.NOT_FOUND_COMMENT)
         );
         Optional<CommentLike> like = commentLikeRepository.findByCommentAndUser(comment, user);
 

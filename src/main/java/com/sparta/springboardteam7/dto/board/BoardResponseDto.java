@@ -23,7 +23,7 @@ public class BoardResponseDto {
         this.id = board.getId();
         this.title = board.getTitle();
         this.content = board.getContent();
-        this.userId = board.getUser().getUserId();
+        this.userId = board.getUser().getId();
         this.like = board.getBoardLikes().size();
         this.comment = board.getComments();
     }

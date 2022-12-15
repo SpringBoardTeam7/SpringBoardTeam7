@@ -9,5 +9,5 @@ import java.util.Optional;
 
 public interface CommentLikeRepository extends JpaRepository<CommentLike, Long> {
     Optional<CommentLike> findByCommentAndUser(Comment comment, User user);
-    CommentLike findByCommentIdAndUserUserId(Long commentId, Long memberId);
+    CommentLike findByCommentIdAndUserId(Long commentId, Long memberId);
 }
