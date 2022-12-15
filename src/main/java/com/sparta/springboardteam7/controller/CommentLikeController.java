@@ -17,8 +17,8 @@ public class CommentLikeController {
     private final CommentLikeService commentLikeService;
 
     @PostMapping("/comments/{commentId}/like")
-    public PassResponseDto saveCommentLike(@PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        commentLikeService.saveCommentLike(commentId, userDetails.getUser());
-        return new PassResponseDto(HttpStatus.OK, "success");
+    public PassResponseDto saveCommentLike(@PathVariable Long commentId,
+                                           @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return commentLikeService.saveCommentLike(commentId, userDetails.getUser());
     }
 }

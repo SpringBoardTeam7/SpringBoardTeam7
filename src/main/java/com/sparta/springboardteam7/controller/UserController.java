@@ -25,7 +25,7 @@ public class UserController {
 
 
     @PostMapping("/signup")
-    public PassResponseDto signup(@RequestBody @Valid SignupRequestDto signupRequestDto) {
+    public PassResponseDto signup(@RequestBody SignupRequestDto signupRequestDto) {
         userService.signup(signupRequestDto);
 
         return new PassResponseDto(HttpStatus.OK, "회원 가입 완료");

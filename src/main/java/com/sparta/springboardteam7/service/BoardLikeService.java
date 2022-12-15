@@ -37,12 +37,12 @@ public class BoardLikeService {
         if(like.isPresent()) {
             BoardLike boardLike = boardLikeRepository.findByBoardIdAndUserId(boardId, user.getId());
             boardLikeRepository.delete(boardLike);
-            return new PassResponseDto(HttpStatus.OK, "좋아요 완료");
+            return new PassResponseDto(HttpStatus.OK, "좋아요 취소");
         }
         else {
             BoardLike boardLike = new BoardLike(user, board);
             boardLikeRepository.save(boardLike);
-            return new PassResponseDto(HttpStatus.OK, "좋아요 취소");
+            return new PassResponseDto(HttpStatus.OK, "좋아요 완료");
         }
     }
 }

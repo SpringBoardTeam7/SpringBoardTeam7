@@ -37,51 +37,24 @@ public class CommentService {
                 () -> new CustomException(ErrorCode.NOT_FOUND_BOARD)
         );
 
-        commentRepository.saveAndFlush(new Comment(requestDto, board));
+        String username = user.getUsername();
+        commentRepository.saveAndFlush(new Comment(requestDto, board, username));
 
         return new PassResponseDto(HttpStatus.OK, "댓글 작성 완료");
     }
 
     @Transactional
-    public CommentResponseDto updateComment(Long id, CommentRequestDto requestDto, HttpServletRequest request) {
+    public PassResponseDto updateComment(Long id, CommentRequestDto requestDto, User user) {
 
-        String token = jwtUtil.resolveToken(request);           // Request(Token) -> BoardService
-        Claims claims;
+        Comment comment = commentRepository.findById(id).orElseThrow(
+                () -> new CustomException(ErrorCode.NOT_FOUND_COMMENT));
 
-        if (token != null) {                                      // 토큰이 있는 경우에만 댓글 작성 가능
-            if (jwtUtil.validateToken(token)) {
-                claims = jwtUtil.getUserInfoFromToken(token);
-
-                User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(
-                        () -> new CustomException(ErrorCode.NOT_FOUND_USER)
-                );
-
-                UserRoleEnum userRoleEnum = user.getRole();
-                Comment comment;
-
-                if (userRoleEnum == UserRoleEnum.USER) {
-                    comment = commentRepository.findById(id).orElseThrow(
-                            () -> new CustomException(ErrorCode.NOT_FOUND_USER)
-                    );
-
-                    String loginUserName = user.getUsername();
-                    if (!comment.getUsername().equals(loginUserName) || user.getRole().equals(UserRoleEnum.ADMIN)) {
-                        throw new CustomException(ErrorCode.INVALID_AUTH_COMMENT);
-                    }
-                } else {
-                    comment = commentRepository.findById(id).orElseThrow(
-                            () -> new CustomException(ErrorCode.NOT_FOUND_COMMENT)
-                    );
-                }
-
-                comment.update(requestDto);                                                 // 입력받은 내용 Update 처리
-                Comment saveComment = commentRepository.save(comment);                      // 업데이트한 내용 저장 (Transection 어노테이션을 제거하여 변경된 상태에서 커밋해주는 로직이 필요함)
-                return new CommentResponseDto("success", HttpStatus.OK, saveComment);
-            }
+        if (comment.getUsername().equals(user.getUsername()) || user.getRole().equals(UserRoleEnum.ADMIN)) {
+            comment.update(requestDto);
+            return new PassResponseDto(HttpStatus.OK, "댓글 수정 완료");
         } else {
-            throw new CustomException(ErrorCode.INVALID_AUTH_TOKEN);
+            throw new CustomException(ErrorCode.INVALID_AUTH_COMMENT);
         }
-        return null;
     }
 
     @Transactional

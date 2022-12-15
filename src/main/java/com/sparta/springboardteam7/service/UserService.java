@@ -1,5 +1,6 @@
 package com.sparta.springboardteam7.service;
 
+import com.sparta.springboardteam7.dto.global.PassResponseDto;
 import com.sparta.springboardteam7.dto.user.LoginRequestDto;
 import com.sparta.springboardteam7.dto.user.SignupRequestDto;
 import com.sparta.springboardteam7.entity.User;
@@ -9,6 +10,7 @@ import com.sparta.springboardteam7.util.exception.ErrorCode;
 import com.sparta.springboardteam7.util.jwt.JwtUtil;
 import com.sparta.springboardteam7.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +36,7 @@ public class UserService {
         String username = signupRequestDto.getUsername();
         String password = passwordEncoder.encode(signupRequestDto.getPassword());
 
+        // 중복 닉네임
         Optional<User> found = userRepository.findByUsername(username);
         if (found.isPresent()) {
             throw new CustomException(ErrorCode.DUPLICATED_USER);
@@ -41,6 +44,7 @@ public class UserService {
 
         UserRoleEnum role = UserRoleEnum.USER;
 
+        // 권한 토큰키 검증
         if (signupRequestDto.isAdmin()) {
             if (!signupRequestDto.getAdminToken().equals(ADMIN_TOKEN)) {
                 throw new CustomException(ErrorCode.INVALID_AUTH_TOKEN);

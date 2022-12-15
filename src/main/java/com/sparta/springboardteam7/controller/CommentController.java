@@ -21,7 +21,8 @@ public class CommentController {
 
     // 댓글 추가
     @PostMapping("/comment/{id}")
-    public PassResponseDto createComment(@PathVariable Long id, @RequestBody CommentRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public PassResponseDto createComment(@PathVariable Long id, @RequestBody CommentRequestDto requestDto,
+                                         @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return commentService.createComment(id, requestDto, userDetails.getUser());
 //        try {
 //            return commentService.createComment(id, requestDto, request);
@@ -32,13 +33,15 @@ public class CommentController {
 
     // Comment Update
     @PutMapping("/comment/{id}")
-    public CommentResponseDto updateComment(@PathVariable Long id, @RequestBody CommentRequestDto requestDto, HttpServletRequest request) {
-        return commentService.updateComment(id, requestDto, request);
+    public PassResponseDto updateComment(@PathVariable Long id, @RequestBody CommentRequestDto requestDto,
+                                         @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return commentService.updateComment(id, requestDto, userDetails.getUser());
     }
 
     // Comment Delete
     @DeleteMapping("/comment/{id}")
-    public PassResponseDto deleteComment(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public PassResponseDto deleteComment(@PathVariable Long id,
+                                         @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return commentService.deleteComment(id, userDetails.getUser());
     }
 }

@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 public class PassResponseDto {
     private HttpStatus statusCode;
     private String msg;
-
     public PassResponseDto(HttpStatus statusCode, String msg) {
         this.statusCode = statusCode;
         this.msg = msg;

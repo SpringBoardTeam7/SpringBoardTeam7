@@ -1,5 +1,6 @@
 package com.sparta.springboardteam7.service;
 
+import com.sparta.springboardteam7.dto.global.PassResponseDto;
 import com.sparta.springboardteam7.entity.Comment;
 import com.sparta.springboardteam7.entity.CommentLike;
 import com.sparta.springboardteam7.entity.User;
@@ -9,6 +10,7 @@ import com.sparta.springboardteam7.repository.UserRepository;
 import com.sparta.springboardteam7.util.exception.CustomException;
 import com.sparta.springboardteam7.util.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +25,7 @@ public class CommentLikeService {
     private final CommentLikeRepository commentLikeRepository;
 
     @Transactional
-    public void saveCommentLike(Long commentId, User user) {
+    public PassResponseDto saveCommentLike(Long commentId, User user) {
         userRepository.findByUsername(user.getUsername()).orElseThrow(
                 () -> new CustomException(ErrorCode.NOT_FOUND_USER)
         );
@@ -34,10 +36,12 @@ public class CommentLikeService {
 
         if(like.isPresent()) {
             commentLikeRepository.delete(like.get());
+            return new PassResponseDto(HttpStatus.OK, "좋아요 취소");
         }
         else {
             CommentLike commentLike = new CommentLike(user, comment.getBoard(), comment);
             commentLikeRepository.save(commentLike);
+            return new PassResponseDto(HttpStatus.OK, "좋아요 완료");
         }
     }
 }

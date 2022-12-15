@@ -28,14 +28,13 @@ public class Comment extends Timestamped {
     private Board board;
 
 
-    public Comment(CommentRequestDto requestDto, Board board) {
+    public Comment(CommentRequestDto requestDto, Board board, String username) {
         this.contents = requestDto.getContents();         // 사용자가 입력한 댓글 내용
-        this.username = requestDto.getUsername();         // 사용자 ID
         this.board = board;                               // Board 컬럼 데이터
+        this.username = username;
     }
 
     public void update(CommentRequestDto requestDto) {
         this.contents = requestDto.getContents();         // 사용자가 입력한 댓글 내용
-        this.username = requestDto.getUsername();         // 사용자 ID
     }
 }
